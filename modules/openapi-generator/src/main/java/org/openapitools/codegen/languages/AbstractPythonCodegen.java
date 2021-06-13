@@ -676,7 +676,8 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
         name = name.replaceAll("-", "_");
 
         // e.g. PhoneNumberApi.py => phone_number_api.py
-        return underscore(name + "_" + apiNameSuffix);
+//        return underscore(name + "_" + apiNameSuffix);
+        return underscore(name);
     }
 
     @Override
@@ -692,9 +693,10 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
     @Override
     public String toApiVarName(String name) {
         if (name.length() == 0) {
-            return "default_api";
+            return "default";
         }
-        return underscore(name + "_" + apiNameSuffix);
+//        return underscore(name + "_" + apiNameSuffix);
+        return underscore(name);
     }
 
     protected static String dropDots(String str) {
