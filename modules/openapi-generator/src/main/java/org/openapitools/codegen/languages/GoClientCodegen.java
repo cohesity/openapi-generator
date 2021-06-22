@@ -29,6 +29,8 @@ import org.openapitools.codegen.utils.ModelUtils;
 import org.openapitools.codegen.utils.ProcessUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.openapitools.codegen.templating.mustache.TitlecaseLambda;
+
 
 import java.io.File;
 import java.util.*;
@@ -183,6 +185,8 @@ public class GoClientCodegen extends AbstractGoCodegen {
 
         additionalProperties.put("apiDocPath", apiDocPath);
         additionalProperties.put("modelDocPath", modelDocPath);
+
+        additionalProperties.put("titlecase", new TitlecaseLambda());
 
         modelPackage = packageName;
         apiPackage = packageName;
