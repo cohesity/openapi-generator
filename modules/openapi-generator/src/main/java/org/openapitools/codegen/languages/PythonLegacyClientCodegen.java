@@ -222,7 +222,7 @@ public class PythonLegacyClientCodegen extends AbstractPythonCodegen implements 
             }
         }
 
-        String readmePath = "README.md";
+        String readmePath = packagePath() + File.separatorChar + submoduleName + File.separatorChar + "README.md";
         String readmeTemplate = "README.mustache";
         if (generateSourceCodeOnly) {
             readmePath = packagePath() + "_" + readmePath;
@@ -242,10 +242,11 @@ public class PythonLegacyClientCodegen extends AbstractPythonCodegen implements 
             supportingFiles.add(new SupportingFile("gitlab-ci.mustache", "", ".gitlab-ci.yml"));
             supportingFiles.add(new SupportingFile("setup.mustache", "", "setup.py"));
         }
-        supportingFiles.add(new SupportingFile("configuration.mustache", packagePath(), "configuration.py"));
+        supportingFiles.add(new SupportingFile("configuration.mustache", packagePath() + File.separatorChar + submoduleName, "configuration.py"));
         supportingFiles.add(new SupportingFile("__init__package.mustache", packagePath(), "__init__.py"));
-        supportingFiles.add(new SupportingFile("__init__model.mustache", packagePath() + File.separatorChar + modelPackage, "__init__.py"));
-        supportingFiles.add(new SupportingFile("__init__api.mustache", packagePath() + File.separatorChar + apiPackage, "__init__.py"));
+        supportingFiles.add(new SupportingFile("__init__submodule.mustache", packagePath() + File.separatorChar + submoduleName, "__init__.py"));
+        supportingFiles.add(new SupportingFile("__init__model.mustache", packagePath() + File.separatorChar + submoduleName + File.separatorChar + modelPackage, "__init__.py"));
+        supportingFiles.add(new SupportingFile("__init__api.mustache", packagePath() + File.separatorChar + submoduleName + File.separatorChar + apiPackage, "__init__.py"));
 
         // If the package name consists of dots(openapi.client), then we need to create the directory structure like openapi/client with __init__ files.
         String[] packageNameSplits = packageName.split("\\.");
@@ -258,13 +259,13 @@ public class PythonLegacyClientCodegen extends AbstractPythonCodegen implements 
             supportingFiles.add(new SupportingFile("__init__.mustache", currentPackagePath, "__init__.py"));
         }
 
-        supportingFiles.add(new SupportingFile("exceptions.mustache", packagePath(), "exceptions.py"));
+        supportingFiles.add(new SupportingFile("exceptions.mustache", packagePath() + File.separatorChar + submoduleName, "exceptions.py"));
 
         if (Boolean.FALSE.equals(excludeTests)) {
             supportingFiles.add(new SupportingFile("__init__.mustache", testFolder, "__init__.py"));
         }
 
-        supportingFiles.add(new SupportingFile("api_client.mustache", packagePath(), "api_client.py"));
+        supportingFiles.add(new SupportingFile("api_client.mustache", packagePath() + File.separatorChar + submoduleName, "api_client.py"));
 
         if ("asyncio".equals(getLibrary())) {
             supportingFiles.add(new SupportingFile("asyncio/rest.mustache", packagePath(), "rest.py"));
@@ -273,7 +274,7 @@ public class PythonLegacyClientCodegen extends AbstractPythonCodegen implements 
             supportingFiles.add(new SupportingFile("tornado/rest.mustache", packagePath(), "rest.py"));
             additionalProperties.put("tornado", "true");
         } else {
-            supportingFiles.add(new SupportingFile("rest.mustache", packagePath(), "rest.py"));
+            supportingFiles.add(new SupportingFile("rest.mustache", packagePath() + File.separatorChar + submoduleName, "rest.py"));
         }
 
         modelPackage = this.packageName + "." + modelPackage;
@@ -360,12 +361,12 @@ public class PythonLegacyClientCodegen extends AbstractPythonCodegen implements 
 
     @Override
     public String apiDocFileFolder() {
-        return (outputFolder + "/" + apiDocPath);
+        return (outputFolder + "/" + packagePath() + File.separatorChar + submoduleName + File.separatorChar + apiDocPath);
     }
 
     @Override
     public String modelDocFileFolder() {
-        return (outputFolder + "/" + modelDocPath);
+        return (outputFolder + "/" + packagePath() + File.separatorChar + submoduleName + File.separatorChar + modelDocPath);
     }
 
     @Override
@@ -392,14 +393,22 @@ public class PythonLegacyClientCodegen extends AbstractPythonCodegen implements 
         return pattern;
     }
 
+    private String insertSubmoduleToImport(String packageImport) {
+        String[] arr = packageImport.split("\\.");
+        String toInsert = "." + submoduleName + ".";
+        return String.join(toInsert, arr);
+    }
+
     @Override
     public String apiFileFolder() {
-        return outputFolder + File.separatorChar + apiPackage().replace('.', File.separatorChar);
+        String apiPackageImport = insertSubmoduleToImport(apiPackage());
+        return outputFolder + File.separatorChar + apiPackageImport.replace('.', File.separatorChar);
     }
 
     @Override
     public String modelFileFolder() {
-        return outputFolder + File.separatorChar + modelPackage().replace('.', File.separatorChar);
+        String modelPackageImport = insertSubmoduleToImport(modelPackage());
+        return outputFolder + File.separatorChar + modelPackageImport.replace('.', File.separatorChar);
     }
 
     @Override

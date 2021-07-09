@@ -402,8 +402,8 @@ public class PythonClientTest {
         DefaultGenerator generator = new DefaultGenerator();
         List<File> files = generator.opts(clientOptInput).generate();
 
-        TestUtils.ensureContainsFile(files, output, "openapi_client/model/a.py");
-        TestUtils.ensureContainsFile(files, output, "openapi_client/model/b.py");
+        TestUtils.ensureContainsFile(files, output, "openapi_client/cohesity_sdk/model/a.py");
+        TestUtils.ensureContainsFile(files, output, "openapi_client/cohesity_sdk/model/b.py");
         output.deleteOnExit();
     }
 
@@ -420,8 +420,8 @@ public class PythonClientTest {
         DefaultGenerator generator = new DefaultGenerator();
         List<File> files = generator.opts(clientOptInput).generate();
 
-        TestUtils.ensureContainsFile(files, output, "openapi_client/model/free_form_with_validation.py");
-        TestUtils.ensureContainsFile(files, output, "openapi_client/model/free_form_interface.py");
+        TestUtils.ensureContainsFile(files, output, "openapi_client/cohesity_sdk/model/free_form_with_validation.py");
+        TestUtils.ensureContainsFile(files, output, "openapi_client/cohesity_sdk/model/free_form_interface.py");
         TestUtils.ensureDoesNotContainsFile(files, output, "openapi_client/model/free_form.py");
         output.deleteOnExit();
     }

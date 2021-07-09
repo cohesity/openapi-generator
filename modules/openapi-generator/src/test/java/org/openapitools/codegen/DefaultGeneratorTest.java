@@ -680,7 +680,7 @@ public class DefaultGeneratorTest {
                     .setGeneratorName("python")
                     .setInputSpec("src/test/resources/3_0/petstore.yaml")
                     .setPackageName("io.something")
-                    .setSubmoduleName("io.something")
+                    .setSubmoduleName("something")
                     .setTemplateDir(templates.toAbsolutePath().toString())
                     .addAdditionalProperty("files", "src/test/resources/sampleConfig.json:\n\t folder: supportingjson "+
                     "\n\t destinationFilename: supportingconfig.json \n\t templateType: SupportingFiles")
@@ -706,10 +706,10 @@ public class DefaultGeneratorTest {
             // Assert.assertTrue(new File(output, "sampleConfig.json").exists());
 
             // Generator should report api_client.py as a generated file
-            TestUtils.ensureContainsFile(files, output, "io/something/api_client.py");
+            TestUtils.ensureContainsFile(files, output, "io/something/something/api_client.py");
 
             // Generated file should exist on the filesystem after generation
-            File apiClient = new File(output, "io/something/api_client.py");
+            File apiClient = new File(output, "io/something/something/api_client.py");
             Assert.assertTrue(apiClient.exists());
 
             // Generated file should contain our custom packageName
