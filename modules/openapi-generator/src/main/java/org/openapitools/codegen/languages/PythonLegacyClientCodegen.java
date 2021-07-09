@@ -137,6 +137,8 @@ public class PythonLegacyClientCodegen extends AbstractPythonCodegen implements 
         cliOptions.add(CliOption.newBoolean(USE_NOSE, "use the nose test framework").
                 defaultValue(Boolean.FALSE.toString()));
         cliOptions.add(new CliOption(RECURSION_LIMIT, "Set the recursion limit. If not set, use the system default value."));
+        cliOptions.add(new CliOption(CodegenConstants.SUBMODULE_NAME, CodegenConstants.SUBMODULE_NAME_DESC)
+                .defaultValue("cohesity_sdk"));
 
         supportedLibraries.put("urllib3", "urllib3-based client");
         supportedLibraries.put("asyncio", "Asyncio-based client (python 3.5+)");
@@ -162,6 +164,10 @@ public class PythonLegacyClientCodegen extends AbstractPythonCodegen implements 
             setPackageName((String) additionalProperties.get(CodegenConstants.PACKAGE_NAME));
         }
 
+        if (additionalProperties.containsKey(CodegenConstants.SUBMODULE_NAME)) {
+            setSubmoduleName((String) additionalProperties.get(CodegenConstants.SUBMODULE_NAME));
+        }
+
         if (additionalProperties.containsKey(CodegenConstants.PROJECT_NAME)) {
             setProjectName((String) additionalProperties.get(CodegenConstants.PROJECT_NAME));
         } else {
@@ -177,6 +183,7 @@ public class PythonLegacyClientCodegen extends AbstractPythonCodegen implements 
         additionalProperties.put(CodegenConstants.PROJECT_NAME, projectName);
         additionalProperties.put(CodegenConstants.PACKAGE_NAME, packageName);
         additionalProperties.put(CodegenConstants.PACKAGE_VERSION, packageVersion);
+        additionalProperties.put(CodegenConstants.SUBMODULE_NAME, submoduleName);
 
         if (additionalProperties.containsKey(CodegenConstants.EXCLUDE_TESTS)) {
             excludeTests = Boolean.valueOf(additionalProperties.get(CodegenConstants.EXCLUDE_TESTS).toString());
@@ -415,9 +422,11 @@ public class PythonLegacyClientCodegen extends AbstractPythonCodegen implements 
         this.packageUrl = packageUrl;
     }
 
-    public String packagePath() {
-        return packageName.replace('.', File.separatorChar);
-    }
+    public String packagePath() { return packageName.replace('.', File.separatorChar); }
+//    public String packagePath() {
+//    return submoduleName.replace('.', File.separatorChar);
+//}
+
 
     /**
      * Generate Python package name from String `packageName`

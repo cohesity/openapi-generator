@@ -500,6 +500,7 @@ public final class GeneratorSettings implements Serializable {
         private String modelPackage;
         private String invokerPackage;
         private String packageName;
+        private String submoduleName;
         private String apiNameSuffix;
         private String modelNamePrefix;
         private String modelNameSuffix;
@@ -590,6 +591,11 @@ public final class GeneratorSettings implements Serializable {
          */
         public Builder withPackageName(String packageName) {
             this.packageName = packageName;
+            return this;
+        }
+
+        public Builder withSubmoduleName(String submoduleName) {
+            this.submoduleName = submoduleName;
             return this;
         }
 

@@ -41,6 +41,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
     private final Logger LOGGER = LoggerFactory.getLogger(AbstractPythonCodegen.class);
 
     protected String packageName = "openapi_client";
+    protected String submoduleName = "cohesity_sdk";
     protected String packageVersion = "1.0.0";
     protected String projectName; // for setup.py, e.g. petstore-api
 
@@ -601,6 +602,11 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
     public void setPackageName(String packageName) {
         this.packageName = packageName;
         additionalProperties.put(CodegenConstants.PACKAGE_NAME, this.packageName);
+    }
+
+    public void setSubmoduleName(String submoduleName) {
+        this.submoduleName = submoduleName;
+        additionalProperties.put(CodegenConstants.SUBMODULE_NAME, this.submoduleName);
     }
 
     public void setProjectName(String projectName) {

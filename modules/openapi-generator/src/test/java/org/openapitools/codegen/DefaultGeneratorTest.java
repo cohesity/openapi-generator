@@ -680,6 +680,7 @@ public class DefaultGeneratorTest {
                     .setGeneratorName("python")
                     .setInputSpec("src/test/resources/3_0/petstore.yaml")
                     .setPackageName("io.something")
+                    .setSubmoduleName("io.something")
                     .setTemplateDir(templates.toAbsolutePath().toString())
                     .addAdditionalProperty("files", "src/test/resources/sampleConfig.json:\n\t folder: supportingjson "+
                     "\n\t destinationFilename: supportingconfig.json \n\t templateType: SupportingFiles")

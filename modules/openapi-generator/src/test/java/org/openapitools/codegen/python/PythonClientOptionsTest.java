@@ -50,5 +50,6 @@ public class PythonClientOptionsTest extends AbstractOptionsTest {
         verify(clientCodegen).setPackageVersion(PythonClientOptionsProvider.PACKAGE_VERSION_VALUE);
         verify(clientCodegen).setPackageUrl(PythonClientOptionsProvider.PACKAGE_URL_VALUE);
         verify(clientCodegen).setUseNose(PythonClientOptionsProvider.USE_NOSE_VALUE);
+        verify(clientCodegen).setSubmoduleName(PythonClientOptionsProvider.SUBMODULE_NAME_VALUE);
     }
 }

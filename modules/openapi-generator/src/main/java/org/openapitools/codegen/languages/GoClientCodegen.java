@@ -41,7 +41,9 @@ public class GoClientCodegen extends AbstractGoCodegen {
 
     private final Logger LOGGER = LoggerFactory.getLogger(GoClientCodegen.class);
     protected String packageVersion = "1.0.0";
+    protected String modelPath = "models/";
     protected String apiDocPath = "docs/";
+    protected String utilsPath = "utils/";
     protected String modelDocPath = "docs/";
     public static final String WITH_XML = "withXml";
     public static final String STRUCT_PREFIX = "structPrefix";
@@ -256,7 +258,7 @@ public class GoClientCodegen extends AbstractGoCodegen {
         supportingFiles.add(new SupportingFile("go.mod.mustache", "", "go.mod"));
         supportingFiles.add(new SupportingFile("go.sum", "", "go.sum"));
         supportingFiles.add(new SupportingFile(".travis.yml", "", ".travis.yml"));
-        supportingFiles.add(new SupportingFile("utils.mustache", "", "utils.go"));
+        supportingFiles.add(new SupportingFile("utils.mustache", "", utilsPath + File.separatorChar + "utils.go"));
     }
 
     public void setUseOneOfDiscriminatorLookup(boolean useOneOfDiscriminatorLookup) {
@@ -289,9 +291,8 @@ public class GoClientCodegen extends AbstractGoCodegen {
     }
 
     @Override
-    public String modelFileFolder() {
-        return outputFolder + File.separator;
-    }
+//    public String modelFileFolder() { return outputFolder + File.separator; }
+    public String modelFileFolder() { return (outputFolder + "/" + modelPath).replace('/', File.separatorChar); }
 
     @Override
     public String apiDocFileFolder() {

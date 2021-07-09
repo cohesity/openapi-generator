@@ -347,10 +347,19 @@ public class PythonClientCodegen extends PythonLegacyClientCodegen {
         return defaultValue;
     }
 
+    private String revisedModelPackage() {
+        String packageNameGeneral = modelPackage();
+        // format import contains special characters, not sure why it handle it like that, it is in the test case
+        if (packageNameGeneral.equals("models"))
+            return packageNameGeneral;
+        else
+            return packageName + "." + submoduleName + "." + "model";
+    }
+
     @Override
     public String toModelImport(String name) {
         // name looks like Cat
-        return "from " + modelPackage() + "." + toModelFilename(name) + " import " + toModelName(name);
+        return "from " + revisedModelPackage() + "." + toModelFilename(name) + " import " + toModelName(name);
     }
 
     @Override
