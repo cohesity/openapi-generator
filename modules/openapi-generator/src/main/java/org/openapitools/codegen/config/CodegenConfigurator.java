@@ -416,6 +416,15 @@ public class CodegenConfigurator {
         return this;
     }
 
+    public CodegenConfigurator setSubmoduleName(String submoduleName) {
+        if (StringUtils.isNotEmpty(submoduleName)) {
+            addAdditionalProperty(CodegenConstants.SUBMODULE_NAME, submoduleName);
+        }
+        generatorSettingsBuilder.withSubmoduleName(submoduleName);
+        return this;
+    }
+
+
     public CodegenConfigurator setReleaseNote(String releaseNote) {
         if (StringUtils.isNotEmpty(releaseNote)) {
             addAdditionalProperty(CodegenConstants.RELEASE_NOTE, releaseNote);

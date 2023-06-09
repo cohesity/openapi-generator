@@ -134,11 +134,11 @@ public class PythonClientCodegen extends PythonLegacyClientCodegen {
         super.processOpts();
         modelPackage = packageName + "." + "model";
 
-        supportingFiles.add(new SupportingFile("model_utils.mustache", packagePath(), "model_utils.py"));
+        supportingFiles.add(new SupportingFile("model_utils.mustache", packagePath() + File.separatorChar + submoduleName, "model_utils.py"));
 
 
         // add the models and apis folders
-        supportingFiles.add(new SupportingFile("__init__models.mustache", packagePath() + File.separatorChar + "models", "__init__.py"));
+        // supportingFiles.add(new SupportingFile("__init__models.mustache", packagePath() + File.separatorChar + "models", "__init__.py"));
         SupportingFile originalInitModel = supportingFiles.stream()
                 .filter(sf -> sf.getTemplateFile().equals("__init__model.mustache"))
                 .reduce((a, b) -> {
@@ -146,8 +146,8 @@ public class PythonClientCodegen extends PythonLegacyClientCodegen {
                 })
                 .get();
         supportingFiles.remove(originalInitModel);
-        supportingFiles.add(new SupportingFile("__init__model.mustache", packagePath() + File.separatorChar + "model", "__init__.py"));
-        supportingFiles.add(new SupportingFile("__init__apis.mustache", packagePath() + File.separatorChar + "apis", "__init__.py"));
+        supportingFiles.add(new SupportingFile("__init__model.mustache", packagePath() + File.separatorChar + submoduleName + File.separatorChar + "model", "__init__.py"));
+        // supportingFiles.add(new SupportingFile("__init__apis.mustache", packagePath() + File.separatorChar + "apis", "__init__.py"));
         // Generate the 'signing.py' module, but only if the 'HTTP signature' security scheme is specified in the OAS.
         Map<String, SecurityScheme> securitySchemeMap = openAPI != null ?
                 (openAPI.getComponents() != null ? openAPI.getComponents().getSecuritySchemes() : null) : null;
@@ -347,10 +347,19 @@ public class PythonClientCodegen extends PythonLegacyClientCodegen {
         return defaultValue;
     }
 
+    private String revisedModelPackage() {
+        String packageNameGeneral = modelPackage();
+        // format import contains special characters, not sure why it handle it like that, it is in the test case
+        if (packageNameGeneral.equals("models"))
+            return packageNameGeneral;
+        else
+            return packageName + "." + submoduleName + "." + "model";
+    }
+
     @Override
     public String toModelImport(String name) {
         // name looks like Cat
-        return "from " + modelPackage() + "." + toModelFilename(name) + " import " + toModelName(name);
+        return "from " + revisedModelPackage() + "." + toModelFilename(name) + " import " + toModelName(name);
     }
 
     @Override

@@ -41,6 +41,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
     private final Logger LOGGER = LoggerFactory.getLogger(AbstractPythonCodegen.class);
 
     protected String packageName = "openapi_client";
+    protected String submoduleName = "cohesity_sdk";
     protected String packageVersion = "1.0.0";
     protected String projectName; // for setup.py, e.g. petstore-api
 
@@ -603,6 +604,11 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
         additionalProperties.put(CodegenConstants.PACKAGE_NAME, this.packageName);
     }
 
+    public void setSubmoduleName(String submoduleName) {
+        this.submoduleName = submoduleName;
+        additionalProperties.put(CodegenConstants.SUBMODULE_NAME, this.submoduleName);
+    }
+
     public void setProjectName(String projectName) {
         this.projectName = projectName;
     }
@@ -676,7 +682,8 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
         name = name.replaceAll("-", "_");
 
         // e.g. PhoneNumberApi.py => phone_number_api.py
-        return underscore(name + "_" + apiNameSuffix);
+//        return underscore(name + "_" + apiNameSuffix);
+        return underscore(name);
     }
 
     @Override
@@ -692,9 +699,10 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
     @Override
     public String toApiVarName(String name) {
         if (name.length() == 0) {
-            return "default_api";
+            return "default";
         }
-        return underscore(name + "_" + apiNameSuffix);
+//        return underscore(name + "_" + apiNameSuffix);
+        return underscore(name);
     }
 
     protected static String dropDots(String str) {
